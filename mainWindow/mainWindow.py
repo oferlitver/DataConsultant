@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 __author__ = 'Ofer'
 
-import sys
-
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
@@ -29,9 +27,12 @@ class DataWindow(QDialog):
 
 
 def main():
+    
+    import sys
+
     app = QApplication(sys.argv)
-    form = DataWindow()
-    form.show()
+    window = DataWindow()
+    window.show()
     app.exec_()
 
 if __name__ == "__main__":
