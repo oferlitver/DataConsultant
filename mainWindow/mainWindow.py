@@ -11,39 +11,39 @@ import sys
 class DataWindow(QMainWindow):
 
     def __init__(self):
-    
         super(DataWindow, self).__init__(None)
         
-        self.createMenu()
+        self.createActions()
+        self.createMenus()
         self.createOptionsGroupBox()
         self.createGraphGroupBox()
         self.createChoiceGroupBox()
-        #self.createWidgets()
-        #self.layoutWidgets()
-        #self.createConnections()
+        
+        self.centralWidget = self.createCentralWidget()
+        self.setCentralWidget(self.centralWidget)
         
         # left part of the screen - options & graph groupbox
-        leftLayout = QVBoxLayout()
-        leftLayout.addWidget(self.optionsGroupBox)
-        leftLayout.addWidget(self.graphGroupBox)
+        #leftLayout = QVBoxLayout()
+        #leftLayout.addWidget(self.optionsGroupBox)
+        #leftLayout.addWidget(self.graphGroupBox)
         
-        mainLayout = QHBoxLayout()
+        #mainLayout = QHBoxLayout()
         #mainLayout.setMenuBar(self.menuBar)
-        mainLayout.addWidget(self.choiceGroupBox)
-#        mainLayout.addWidget(self.
-        self.setLayout(mainLayout)
+        #mainLayout.addWidget(self.choiceGroupBox)
+        #mainLayout.addWidget(self.testLabel)
+        #mainLayout.addWidget(self.
+        #self.setLayout(mainLayout)
         
+        self.setMinimumSize(150, 100)
         self.setWindowTitle("Main Window")
-        self.setMinimumSize(360, 240)
 
-    def testPopup(self):
-        test = QDialog()
-        testLayout = QHBoxLayout()
-        testLayout.addWidget(QLabel("test"))
-        test.setLayout(testLayout)
-        test.show()
+    def new(self):
+        self.testLabel.setText("test succeded")
 
-    def createMenu(self):
+    def createActions(self):
+        self.newAction = QAction("&New", self, triggered=self.new)
+
+    def createMenus(self):
         """self.menuBar = QMenuBar()
         
         self.fileMenu = QMenu("&File", self)
@@ -52,20 +52,22 @@ class DataWindow(QMainWindow):
         
         self.exitAction.triggered.connect(sys.exit)
         """
-        menu = self.menuBar().addMenu("&File")
-        self.exitAction = QAction("E&xit", self)
-        self.testAction = QAction("&Test", self)
-        
-        self.exitAction.triggered.connect(sys.exit)
-        self.testAction.triggered.connect(self.testPopup)
-        
-        menu.addAction(self.exitAction)
-        menu.addSeparator()
-        menu.addAction(self.testAction)
+        self.fileMenu = self.menuBar().addMenu("&File")
+        self.fileMenu.addAction(self.newAction)
+        self.fileMenu.addSeparator()
+        #self.fileMenu.addAction(self.exitAction)
 
     def createOptionsGroupBox(self):
         self.optionsGroupBox = QGroupBox("Options")
         layout = QVBoxLayout()
+        
+        self.sundayCheckBox = QCheckBox("Sunday")
+        self.mondayCheckBox = QCheckBox("Monday")
+        self.tuesdayCheckBox = QCheckBox("Tuesday")
+        
+        layout.addWidget(self.sundayCheckBox)
+        layout.addWidget(self.mondayCheckBox)
+        layout.addWidget(self.tuesdayCheckBox)
         layout.addWidget(QPushButton("Button"))
         self.optionsGroupBox.setLayout(layout)
         
@@ -81,17 +83,18 @@ class DataWindow(QMainWindow):
         layout.addWidget(QTextEdit())
         self.choiceGroupBox.setLayout(layout)
 
-    def createWidgets(self):
-        self.idLabel = QLabel("smthing")
-
-    def layoutWidgets(self):
-        grid = QGridLayout()
-        grid.addWidget(self.idLabel, 0, 0)
-        self.setLayout(grid)
-
-    def createConnections(self):
-        pass
-
+    def createCentralWidget(self):
+    
+        frame = QFrame(self)
+        grid = QGridLayout(frame)
+        grid.setSpacing(8)
+        grid.setContentsMargins(4, 4, 4, 4)
+        
+        grid.addWidget(self.optionsGroupBox, 0, 0)
+        grid.addWidget(self.graphGroupBox, 1, 0)
+        grid.addWidget(self.choiceGroupBox, 0, 1)
+        
+        return frame
 
 def main():
 
