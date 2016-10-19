@@ -72,8 +72,11 @@ class Form(QDialog):
         # self.reject.connect(self.rejected())
         
     def accepted(self):
+        # get value of gender checkbox
         g = self.genderButtonGroup.checkedId()
         gender = 'm' if g == 1 else 'f' if g == 2 else '-'
+        
+        # write results to CSV file
         file = open("data.csv", "w")
         file.write(self.idLineEdit.text() +
                    ',' +
