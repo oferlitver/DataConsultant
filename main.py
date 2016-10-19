@@ -4,6 +4,10 @@
 
 __author__ = 'Ofer'
 
-from new_user import new_user
+from newUser import newUser
 
-new_user()
+def main():
+    newUser.main()
+
+if __name__ == "__main__":
+    main()
