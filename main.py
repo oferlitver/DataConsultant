@@ -2,9 +2,13 @@
 
 """main file of experiment"""
 
-__author__ = 'Ofer'
 
 from newUser import newUser
+
+
+__author__ = 'Ofer'
+
+
 
 def main():
     newUser.main()

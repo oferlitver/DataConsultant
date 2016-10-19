@@ -1,20 +1,22 @@
 # -*- coding: utf-8 -*-
-__author__ = 'Ofer'
 
 import sys
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
+__author__ = 'Ofer'
+
+
 class Form(QDialog):
-    
+
     def __init__(self, parent=None):
         super(Form, self).__init__(parent)
         self.create_widgets()
         self.layout_widgets()
         self.create_connections()
         self.setWindowTitle("User details")
-        
+
     def create_widgets(self):
         self.idLabel = QLabel("Identification number")
         self.idLineEdit = QLineEdit()
@@ -22,13 +24,12 @@ class Form(QDialog):
         regexp = QRegExp('^\d{8,9}$')
         validator = QRegExpValidator(regexp)
         self.idLineEdit.setValidator(validator)
-        #self.idLineEdit.setPlaceholderText("Please type your ID")
-        
+
         self.ageLabel = QLabel("Age:")
         self.ageSpinBox = QSpinBox()
         self.ageSpinBox.setRange(16, 80)
         self.ageSpinBox.setValue(20)
-        
+
         self.genderLabel = QLabel("Gender:")
         self.maleRadioButton = QRadioButton("Male")
         self.femaleRadioButton = QRadioButton("Female")
@@ -41,16 +42,17 @@ class Form(QDialog):
 
         self.fieldLabel = QLabel("Primary field of studies:")
         field_list = ["--- Please select ---",
-                      "Electrical Engineering", 
-                      "Mechanical Engineering", 
-                      "Industrial Engineering", 
-                      "Biomedical Engineering", 
+                      "Electrical Engineering",
+                      "Mechanical Engineering",
+                      "Industrial Engineering",
+                      "Biomedical Engineering",
                       "Environmental Engineering"]
         self.fieldComboBox = QComboBox()
         self.fieldComboBox.addItems(field_list)
 
-        self.buttonBox = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
-        
+        self.buttonBox = QDialogButtonBox(QDialogButtonBox.Ok |
+                                          QDialogButtonBox.Cancel)
+
     def layout_widgets(self):
         grid = QGridLayout()
         grid.addWidget(self.idLabel, 0, 0)
@@ -70,36 +72,39 @@ class Form(QDialog):
         self.buttonBox.accepted.connect(self.accepted)
         self.buttonBox.rejected.connect(self.rejected)
         # self.reject.connect(self.rejected())
-        
+
     def accepted(self):
-        # get value of gender checkbox
+        # get value of gender checkbox and convert
+        # m --> 1
+        # f --> 2
         g = self.genderButtonGroup.checkedId()
         gender = 'm' if g == 1 else 'f' if g == 2 else '-'
-        
+
         # write results to CSV file
-        file = open("data.csv", "w")
+        file = open("output/data.csv", "w")
         file.write(self.idLineEdit.text() +
                    ',' +
                    str(self.ageSpinBox.value()) +
-                   ',' + 
+                   ',' +
                    gender)
         file.close()
-        #print self.fieldComboBox.currentText()
-        #print self.fieldComBox.
 
     def rejected(self):
+        # in case of pressing "Cancel"
         self.closeEvent(self)
-    
+
     def closeEvent(self, event):
         """in case of a click on X"""
         reply = QMessageBox.question(self, 'Message',
-            "Are you sure you want to quit?", QMessageBox.Yes | 
-            QMessageBox.No, QMessageBox.No)
+                                     "Are you sure you want to quit?",
+                                     QMessageBox.Yes | QMessageBox.No,
+                                     QMessageBox.No)
         if reply == QMessageBox.Yes:
             event.accept()
         else:
-            event.ignore()        
-        
+            event.ignore()
+
+
 def main():
     app = QApplication(sys.argv)
     form = Form()
