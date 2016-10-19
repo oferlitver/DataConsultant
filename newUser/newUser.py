@@ -12,12 +12,12 @@ class Form(QDialog):
 
     def __init__(self, parent=None):
         super(Form, self).__init__(parent)
-        self.create_widgets()
-        self.layout_widgets()
-        self.create_connections()
+        self.createWidgets()
+        self.layoutWidgets()
+        self.createConnections()
         self.setWindowTitle("User details")
 
-    def create_widgets(self):
+    def createWidgets(self):
         self.idLabel = QLabel("Identification number")
         self.idLineEdit = QLineEdit()
         # TODO add validation
@@ -53,7 +53,7 @@ class Form(QDialog):
         self.buttonBox = QDialogButtonBox(QDialogButtonBox.Ok |
                                           QDialogButtonBox.Cancel)
 
-    def layout_widgets(self):
+    def layoutWidgets(self):
         grid = QGridLayout()
         grid.addWidget(self.idLabel, 0, 0)
         grid.addWidget(self.idLineEdit, 0, 1)
@@ -68,25 +68,23 @@ class Form(QDialog):
         layout.addWidget(self.buttonBox)
         self.setLayout(layout)
 
-    def create_connections(self):
+    def createConnections(self):
         self.buttonBox.accepted.connect(self.accepted)
         self.buttonBox.rejected.connect(self.rejected)
-        # self.reject.connect(self.rejected())
 
     def accepted(self):
         # get value of gender checkbox and convert
-        # m --> 1
-        # f --> 2
+        # 1 --> m
+        # 2 --> f
         g = self.genderButtonGroup.checkedId()
         gender = 'm' if g == 1 else 'f' if g == 2 else '-'
 
         # write results to CSV file
         file = open("output/data.csv", "w")
-        file.write(self.idLineEdit.text() +
-                   ',' +
-                   str(self.ageSpinBox.value()) +
-                   ',' +
-                   gender)
+        file.write(self.idLineEdit.text() + ',' +
+                   str(self.ageSpinBox.value()) + ',' +
+                   gender + ',' +
+                   self.fieldComboBox.currentText())
         file.close()
 
     def rejected(self):
@@ -94,7 +92,7 @@ class Form(QDialog):
         self.closeEvent(self)
 
     def closeEvent(self, event):
-        """in case of a click on X"""
+        # in case of clicking on X
         reply = QMessageBox.question(self, 'Message',
                                      "Are you sure you want to quit?",
                                      QMessageBox.Yes | QMessageBox.No,
@@ -108,7 +106,7 @@ class Form(QDialog):
 def main():
     app = QApplication(sys.argv)
     form = Form()
-    form.show()
+    form.showFullScreen()
     app.exec_()
 
 if __name__ == "__main__":
