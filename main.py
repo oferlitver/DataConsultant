@@ -6,7 +6,7 @@
 from newUser import newUser
 
 
-__author__ = 'Ofer'
+__author__ = 'Ofer Litver'
 
 
 

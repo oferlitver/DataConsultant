@@ -2,7 +2,7 @@
 
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-
+from PyQt5.QtGui import *
 
 
 __author__ = 'Ofer Litver'
@@ -17,6 +17,7 @@ class InstructionScreen(QDialog):
         instructionLabel = QLabel(self.instructionText)
         instructionLabel.setWordWrap(True)
         instructionLabel.setFixedSize(360, 240)
+        instructionLabel.setText(instructionLabel.QFont.pointSize())
 
         layout = QHBoxLayout()
         layout.addWidget(instructionLabel)

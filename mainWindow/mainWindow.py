@@ -103,7 +103,13 @@ def main():
     app = QApplication(sys.argv)
     window = DataWindow()
     window.show()
-    #app.exec_()  # changed after menus.py example
+    #~ app.setStyle(QStyleFactory.create("plastique"))
+    #~ app.setStyle(QStyleFactory.create("cde"))
+    #~ app.setStyle(QStyleFactory.create("motif"))
+    #~ app.setStyle(QStyleFactory.create("sgi"))
+    #~ app.setStyle(QStyleFactory.create("windows"))
+    #~ app.setStyle(QStyleFactory.create("cleanlooks"))
+    #~ app.setStyle(QStyleFactory.create("mac"))
     sys.exit(app.exec_())
 
 if __name__ == "__main__":

@@ -5,7 +5,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-__author__ = 'Ofer'
+__author__ = 'Ofer Litver'
 
 
 class Form(QDialog):
@@ -15,6 +15,7 @@ class Form(QDialog):
         self.createWidgets()
         self.layoutWidgets()
         self.createConnections()
+
         self.setWindowTitle("User details")
 
     def createWidgets(self):
@@ -64,6 +65,7 @@ class Form(QDialog):
         grid.addWidget(self.fieldLabel, 3, 0)
         grid.addWidget(self.fieldComboBox, 3, 1)
         layout = QVBoxLayout()
+        layout.addSpacing(500)
         layout.addLayout(grid)
         layout.addWidget(self.buttonBox)
         self.setLayout(layout)
