@@ -8,7 +8,7 @@ from PyQt5.QtWidgets import *
 __author__ = 'Ofer Litver'
 
 
-class Form(QDialog):
+class NewUserForm(QDialog):
 
     def __init__(self, parent=None):
         super(Form, self).__init__(parent)
@@ -107,7 +107,7 @@ class Form(QDialog):
 
 def main():
     app = QApplication(sys.argv)
-    form = Form()
+    form = NewUserForm()
     form.showFullScreen()
     app.exec_()
 
