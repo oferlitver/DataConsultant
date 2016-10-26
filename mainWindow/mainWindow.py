@@ -102,7 +102,7 @@ def main():
 
     app = QApplication(sys.argv)
     window = DataWindow()
-    window.show()
+    window.showFullScreen()
     #~ app.setStyle(QStyleFactory.create("plastique"))
     #~ app.setStyle(QStyleFactory.create("cde"))
     #~ app.setStyle(QStyleFactory.create("motif"))

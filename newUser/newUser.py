@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
 
 import sys
+
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
+
+# TODO finish this
+#from DataConsultant.styles import styles
+
 
 __author__ = 'Ofer Litver'
 
@@ -11,7 +16,7 @@ __author__ = 'Ofer Litver'
 class NewUserForm(QDialog):
 
     def __init__(self, parent=None):
-        super(Form, self).__init__(parent)
+        super(NewUserForm, self).__init__(parent)
         self.createWidgets()
         self.layoutWidgets()
         self.createConnections()
@@ -19,6 +24,12 @@ class NewUserForm(QDialog):
         self.setWindowTitle("User details")
 
     def createWidgets(self):
+        title = QLabel("Welcome")
+        titleFont = QFont()
+        titleFont.setPointSize(36)
+        title.setFont(titleFont)
+        subtitle = QLabel("Please fill the following details:")
+
         self.idLabel = QLabel("Identification number")
         self.idLineEdit = QLineEdit()
         # TODO add validation
@@ -64,8 +75,11 @@ class NewUserForm(QDialog):
         grid.addLayout(self.genderLayout, 2, 1)
         grid.addWidget(self.fieldLabel, 3, 0)
         grid.addWidget(self.fieldComboBox, 3, 1)
+
         layout = QVBoxLayout()
-        layout.addSpacing(500)
+        layout.addWidget(title)
+        layout.addWidget(subtitle)
+        layout.addSpacing(50)
         layout.addLayout(grid)
         layout.addWidget(self.buttonBox)
         self.setLayout(layout)
