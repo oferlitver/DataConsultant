@@ -24,11 +24,11 @@ class NewUserForm(QDialog):
         self.setWindowTitle("User details")
 
     def createWidgets(self):
-        title = QLabel("Welcome")
+        self.title = QLabel("Welcome")
         titleFont = QFont()
         titleFont.setPointSize(36)
-        title.setFont(titleFont)
-        subtitle = QLabel("Please fill the following details:")
+        self.title.setFont(titleFont)
+        self.subtitle = QLabel("Please fill the following details:")
 
         self.idLabel = QLabel("Identification number")
         self.idLineEdit = QLineEdit()
@@ -77,8 +77,8 @@ class NewUserForm(QDialog):
         grid.addWidget(self.fieldComboBox, 3, 1)
 
         layout = QVBoxLayout()
-        layout.addWidget(title)
-        layout.addWidget(subtitle)
+        layout.addWidget(self.title)
+        layout.addWidget(self.subtitle)
         layout.addSpacing(50)
         layout.addLayout(grid)
         layout.addWidget(self.buttonBox)
