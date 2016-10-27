@@ -66,23 +66,33 @@ class NewUserForm(QDialog):
                                           QDialogButtonBox.Cancel)
 
     def layoutWidgets(self):
-        grid = QGridLayout()
-        grid.addWidget(self.idLabel, 0, 0)
-        grid.addWidget(self.idLineEdit, 0, 1)
-        grid.addWidget(self.ageLabel, 1, 0)
-        grid.addWidget(self.ageSpinBox, 1, 1)
-        grid.addWidget(self.genderLabel, 2, 0)
-        grid.addLayout(self.genderLayout, 2, 1)
-        grid.addWidget(self.fieldLabel, 3, 0)
-        grid.addWidget(self.fieldComboBox, 3, 1)
-
+        screenLayout = QGridLayout()
+        screenLayout.setColumnStretch(0, 1)
+        screenLayout.setColumnStretch(2, 1)
+        screenLayout.setRowStretch(0, 1)
+        screenLayout.setRowStretch(2, 1)
+        
+        centerLayout = QGridLayout()
+        centerLayout.addWidget(self.title, 0, 0, 1, 2)
+        centerLayout.addWidget(self.subtitle, 1, 0, 1, 2)
+        centerLayout.addWidget(self.idLabel, 2, 0)
+        centerLayout.addWidget(self.idLineEdit, 2, 1)
+        centerLayout.addWidget(self.ageLabel, 3, 0)
+        centerLayout.addWidget(self.ageSpinBox, 3, 1)
+        centerLayout.addWidget(self.genderLabel, 4, 0)
+        centerLayout.addLayout(self.genderLayout, 4, 1)
+        centerLayout.addWidget(self.fieldLabel, 5, 0)
+        centerLayout.addWidget(self.fieldComboBox, 5, 1)
+        '''
         layout = QVBoxLayout()
         layout.addWidget(self.title)
         layout.addWidget(self.subtitle)
         layout.addSpacing(50)
         layout.addLayout(grid)
         layout.addWidget(self.buttonBox)
-        self.setLayout(layout)
+        '''
+        screenLayout.addLayout(centerLayout, 1, 1)
+        self.setLayout(screenLayout)
 
     def createConnections(self):
         self.buttonBox.accepted.connect(self.accepted)
