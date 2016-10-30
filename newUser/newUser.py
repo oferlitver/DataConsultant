@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+#-*- coding: utf-8 -*-
 
 import sys
 
@@ -55,7 +55,7 @@ class NewUserForm(QDialog):
         self.fieldLabel = QLabel("Primary field of studies:")
         field_list = ["--- Please select ---",
                       "Electrical Engineering",
-                      "Mechanical Engineering",
+                      "9echanical Engineering",
                       "Industrial Engineering",
                       "Biomedical Engineering",
                       "Environmental Engineering"]
@@ -70,10 +70,12 @@ class NewUserForm(QDialog):
         screenLayout.setColumnStretch(0, 1)
         screenLayout.setColumnStretch(2, 1)
         screenLayout.setRowStretch(0, 1)
+        screenLayout.setRowStretch(1, 1)
         screenLayout.setRowStretch(2, 1)
         
         centerLayout = QGridLayout()
         centerLayout.addWidget(self.title, 0, 0, 1, 2)
+        centerLayout.setRowStretch(0, 2)
         centerLayout.addWidget(self.subtitle, 1, 0, 1, 2)
         centerLayout.addWidget(self.idLabel, 2, 0)
         centerLayout.addWidget(self.idLineEdit, 2, 1)
@@ -83,14 +85,7 @@ class NewUserForm(QDialog):
         centerLayout.addLayout(self.genderLayout, 4, 1)
         centerLayout.addWidget(self.fieldLabel, 5, 0)
         centerLayout.addWidget(self.fieldComboBox, 5, 1)
-        '''
-        layout = QVBoxLayout()
-        layout.addWidget(self.title)
-        layout.addWidget(self.subtitle)
-        layout.addSpacing(50)
-        layout.addLayout(grid)
-        layout.addWidget(self.buttonBox)
-        '''
+
         screenLayout.addLayout(centerLayout, 1, 1)
         self.setLayout(screenLayout)
 
