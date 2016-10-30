@@ -21,10 +21,8 @@ class NewUserForm(QDialog):
         self.layoutWidgets()
         self.createConnections()
 
-        self.setWindowTitle("User details")
-
     def createWidgets(self):
-        self.title = QLabel("Welcome")
+        self.title = QLabel("Welcome!")
         titleFont = QFont()
         titleFont.setPointSize(36)
         titleFont.setItalic(True)
@@ -68,14 +66,15 @@ class NewUserForm(QDialog):
         self.fieldComboBox.addItems(field_list)
         self.fieldLabel.setBuddy(self.fieldComboBox)
 
-        self.buttonBox = QDialogButtonBox(QDialogButtonBox.Ok |
-                                          QDialogButtonBox.Cancel)
+        self.nextButton = QPushButton("Next >")
+        self.buttonBox = QDialogButtonBox(self.nextButton)
 
     def layoutWidgets(self):
         screenLayout = QGridLayout()
         screenLayout.setSpacing(20)
-        screenLayout.setColumnStretch(0, 1)
+        screenLayout.setColumnStretch(0, 2)
         screenLayout.setColumnStretch(3, 1)
+        screenLayout.setColumnStretch(4, 1)
         screenLayout.setRowStretch(0, 1)
         
         screenLayout.addWidget(self.title, 1, 1, 1, 2)
@@ -89,13 +88,14 @@ class NewUserForm(QDialog):
         screenLayout.addLayout(self.genderLayout, 6, 2)
         screenLayout.addWidget(self.fieldLabel, 7, 1)
         screenLayout.addWidget(self.fieldComboBox, 7, 2)
-        screenLayout.setRowStretch(8, 1)
+        screenLayout.setRowMinimumHeight(8, 10)
+        screenLayout.addWidget(self.buttonBox, 9, 3)
+        screenLayout.setRowStretch(10, 1)
 
         self.setLayout(screenLayout)
 
     def createConnections(self):
-        self.buttonBox.accepted.connect(self.accepted)
-        self.buttonBox.rejected.connect(self.rejected)
+        self.nextButton.clicked.connect(self.accepted)
 
     def accepted(self):
         # get value of gender checkbox and convert
