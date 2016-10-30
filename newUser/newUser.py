@@ -27,22 +27,26 @@ class NewUserForm(QDialog):
         self.title = QLabel("Welcome")
         titleFont = QFont()
         titleFont.setPointSize(36)
+        titleFont.setItalic(True)
         self.title.setFont(titleFont)
-        self.subtitle = QLabel("Please fill the following details:")
+        self.subtitle = QLabel("Before we begin the experiment, please fill the following details. Those details will be kept completely confidential and used for the sole purpose of the experiment.")
+        self.subtitle.setWordWrap(True)
 
-        self.idLabel = QLabel("Identification number")
+        self.idLabel = QLabel("&Identification number")
         self.idLineEdit = QLineEdit()
         # TODO add validation
         regexp = QRegExp('^\d{8,9}$')
         validator = QRegExpValidator(regexp)
         self.idLineEdit.setValidator(validator)
+        self.idLabel.setBuddy(self.idLineEdit)
 
-        self.ageLabel = QLabel("Age:")
+        self.ageLabel = QLabel("&Age:")
         self.ageSpinBox = QSpinBox()
         self.ageSpinBox.setRange(16, 80)
         self.ageSpinBox.setValue(20)
+        self.ageLabel.setBuddy(self.ageSpinBox)
 
-        self.genderLabel = QLabel("Gender:")
+        self.genderLabel = QLabel("&Gender:")
         self.maleRadioButton = QRadioButton("Male")
         self.femaleRadioButton = QRadioButton("Female")
         self.genderButtonGroup = QButtonGroup()
@@ -51,42 +55,42 @@ class NewUserForm(QDialog):
         self.genderLayout = QHBoxLayout()
         self.genderLayout.addWidget(self.maleRadioButton)
         self.genderLayout.addWidget(self.femaleRadioButton)
+        self.genderLabel.setBuddy(self.maleRadioButton)
 
-        self.fieldLabel = QLabel("Primary field of studies:")
+        self.fieldLabel = QLabel("Primary &field of studies:")
         field_list = ["--- Please select ---",
                       "Electrical Engineering",
-                      "9echanical Engineering",
+                      "Mechanical Engineering",
                       "Industrial Engineering",
                       "Biomedical Engineering",
                       "Environmental Engineering"]
         self.fieldComboBox = QComboBox()
         self.fieldComboBox.addItems(field_list)
+        self.fieldLabel.setBuddy(self.fieldComboBox)
 
         self.buttonBox = QDialogButtonBox(QDialogButtonBox.Ok |
                                           QDialogButtonBox.Cancel)
 
     def layoutWidgets(self):
         screenLayout = QGridLayout()
+        screenLayout.setSpacing(20)
         screenLayout.setColumnStretch(0, 1)
-        screenLayout.setColumnStretch(2, 1)
+        screenLayout.setColumnStretch(3, 1)
         screenLayout.setRowStretch(0, 1)
-        screenLayout.setRowStretch(1, 1)
-        screenLayout.setRowStretch(2, 1)
         
-        centerLayout = QGridLayout()
-        centerLayout.addWidget(self.title, 0, 0, 1, 2)
-        centerLayout.setRowStretch(0, 2)
-        centerLayout.addWidget(self.subtitle, 1, 0, 1, 2)
-        centerLayout.addWidget(self.idLabel, 2, 0)
-        centerLayout.addWidget(self.idLineEdit, 2, 1)
-        centerLayout.addWidget(self.ageLabel, 3, 0)
-        centerLayout.addWidget(self.ageSpinBox, 3, 1)
-        centerLayout.addWidget(self.genderLabel, 4, 0)
-        centerLayout.addLayout(self.genderLayout, 4, 1)
-        centerLayout.addWidget(self.fieldLabel, 5, 0)
-        centerLayout.addWidget(self.fieldComboBox, 5, 1)
+        screenLayout.addWidget(self.title, 1, 1, 1, 2)
+        screenLayout.setRowMinimumHeight(2, 50)
+        screenLayout.addWidget(self.subtitle, 3, 1, 1, 2)
+        screenLayout.addWidget(self.idLabel, 4, 1)
+        screenLayout.addWidget(self.idLineEdit, 4, 2)
+        screenLayout.addWidget(self.ageLabel, 5, 1)
+        screenLayout.addWidget(self.ageSpinBox, 5, 2)
+        screenLayout.addWidget(self.genderLabel, 6, 1)
+        screenLayout.addLayout(self.genderLayout, 6, 2)
+        screenLayout.addWidget(self.fieldLabel, 7, 1)
+        screenLayout.addWidget(self.fieldComboBox, 7, 2)
+        screenLayout.setRowStretch(8, 1)
 
-        screenLayout.addLayout(centerLayout, 1, 1)
         self.setLayout(screenLayout)
 
     def createConnections(self):
