@@ -3,11 +3,10 @@
 """main file of experiment"""
 
 
-from newUser import newUser
+import newUser
 
 
 __author__ = 'Ofer Litver'
-
 
 
 def main():
