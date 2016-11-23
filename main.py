@@ -5,6 +5,11 @@
 
 import sys
 
+from numpy import pi, sin, arange
+
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
+
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
@@ -14,7 +19,7 @@ __author__ = 'Ofer Litver'
 
 
 
-class NewUserForm(QDialog):
+class NewUserForm(QWidget):
 
     def __init__(self, parent=None):
         super(NewUserForm, self).__init__(parent)
@@ -135,17 +140,55 @@ class NewUserForm(QDialog):
             event.ignore()
 
 
+class GraphCanvas(FigureCanvas):
+
+    def __init__(self, x=None, y=None, parent=None, width=5, height=4, dpi=100):
+        self.x = x
+        self.y = y
+        fig = Figure(figsize=(width, height), dpi=dpi)
+        self.axes = fig.add_subplot(111)
+        # clear the axes every time plot() is called
+        self.axes.hold(False)
+
+        self.compute_initial_figure()
+
+        FigureCanvas.__init__(self, fig)
+        self.setParent(parent)
+
+        FigureCanvas.setSizePolicy(self,
+                                   QSizePolicy.Expanding,
+                                   QSizePolicy.Expanding)
+        FigureCanvas.updateGeometry(self)
+
+    def compute_initial_figure(self):
+        self.t = arange(0.0, 3.0, 0.01)
+        self.s = sin(2*pi*self.t)
+        self.axes.plot(self.t, self.s)
+
+    def update_figure(self):
+        self.s += 0.1
+        self.axes.plot(self.t, self.s)
+        self.draw()
+
+
 class DataWindow(QWidget):
 
     def __init__(self):
         super(DataWindow, self).__init__(None)
+        self.graph = GraphCanvas()
         
         self.createOptionsGroupBox()
         self.createGraphGroupBox()
         self.createChoiceGroupBox()
         self.createCentralWidget()
         self.setLayout(self.grid)
-        
+
+    def createChoiceGroupBox(self):
+        self.choiceGroupBox = QGroupBox("Choice")
+        layout = QVBoxLayout()
+        layout.addWidget(self.graph)
+        self.choiceGroupBox.setLayout(layout)
+
     def createOptionsGroupBox(self):
         self.optionsGroupBox = QGroupBox("Options")
         layout = QVBoxLayout()
@@ -157,7 +200,9 @@ class DataWindow(QWidget):
         self.thursdayCheckBox = QCheckBox("Thursday")
         self.fridayCheckBox = QCheckBox("Friday")
         self.saturdayCheckBox = QCheckBox("Saturday")
-        
+
+        self.sundayCheckBox.toggled.connect(self.graph.update_figure)
+
         layout.addWidget(self.sundayCheckBox)
         layout.addWidget(self.mondayCheckBox)
         layout.addWidget(self.tuesdayCheckBox)
@@ -167,26 +212,20 @@ class DataWindow(QWidget):
         layout.addWidget(self.saturdayCheckBox)
         layout.addWidget(QPushButton("Button"))
         self.optionsGroupBox.setLayout(layout)
-        
+
     def createGraphGroupBox(self):
         self.graphGroupBox = QGroupBox("Graph")
         layout = QVBoxLayout()
         layout.addWidget(QPushButton("Graph"))
         self.graphGroupBox.setLayout(layout)
-        
-    def createChoiceGroupBox(self):
-        self.choiceGroupBox = QGroupBox("Choice")
-        layout = QVBoxLayout()
-        layout.addWidget(QTextEdit())
-        self.choiceGroupBox.setLayout(layout)
 
     def createCentralWidget(self):
-    
+
         frame = QFrame(self)
         self.grid = QGridLayout(frame)
         self.grid.setSpacing(8)
         self.grid.setContentsMargins(4, 4, 4, 4)
-        
+
         self.grid.addWidget(self.optionsGroupBox, 0, 0)
         self.grid.addWidget(self.graphGroupBox, 1, 0)
         self.grid.addWidget(self.choiceGroupBox, 0, 1)
@@ -207,9 +246,9 @@ class FlowDialog(QDialog):
 
         # set screen shoulders
         mainLayout.setRowMinimumHeight(0, 80)
-        mainLayout.setRowMinimumHeight(3, 80)
-        mainLayout.setColumnMinimumWidth(0, 80)
-        mainLayout.setColumnMinimumWidth(2, 80)
+        mainLayout.setRowMinimumHeight(3, 20)
+        mainLayout.setColumnMinimumWidth(0, 20)
+        mainLayout.setColumnMinimumWidth(2, 20)
 
         mainLayout.addWidget(self.pagesWidget, 1, 1)
         mainLayout.addWidget(self.nextButton, 2, 1)
