@@ -4,36 +4,30 @@
 
 
 import sys
-#from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-#from matplotlib.figure import Figure
 from PyQt5.QtWidgets import (QWidget, QDialog, QApplication, QStackedWidget, 
                              QGroupBox, QVBoxLayout, QCheckBox, QPushButton,
                              QLabel, QFrame, QGridLayout)
 from newUser import NewUserForm
-
+from data_window import DataWidget
 
 __author__ = 'Ofer Litver'
 
 
-class FlowDialog(QDialog):
+class FlowDialog(QWidget):
+
     def __init__(self, parent=None):
         super(FlowDialog, self).__init__(parent)
-
         self.pagesWidget = QStackedWidget()
         self.pagesWidget.addWidget(NewUserForm())
-        self.pagesWidget.addWidget(DataWindow())
-
+        self.pagesWidget.addWidget(DataWidget())
         self.nextButton = QPushButton("Next")
         self.nextButton.pressed.connect(self.nextPressed)
-
         mainLayout = QGridLayout()
-
         # set screen shoulders
         mainLayout.setRowMinimumHeight(0, 80)
         mainLayout.setRowMinimumHeight(3, 80)
         mainLayout.setColumnMinimumWidth(0, 80)
         mainLayout.setColumnMinimumWidth(2, 80)
-
         mainLayout.addWidget(self.pagesWidget, 1, 1)
         mainLayout.addWidget(self.nextButton, 2, 1)
         self.setLayout(mainLayout)
