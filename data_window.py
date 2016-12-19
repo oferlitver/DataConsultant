@@ -16,7 +16,6 @@ from graph import GraphCanvas
 
 DATE_DISPLAY_FORMAT = "dd/MM/yyyy"
 HISTORIC_DATA = "./data/historic_data.csv"
-# HISTORIC_DATA = "./data/sample_data.csv"
 
 
 class DataWidget(QWidget):
@@ -25,25 +24,25 @@ class DataWidget(QWidget):
         super(DataWidget, self).__init__(None)
         self.read_data_file(HISTORIC_DATA)
         self.start_date = date(2016, 10, 1)
-        self.end_date = date(2016, 12, 1)
+        self.end_date = date(2016, 11, 1)
         self.graph = GraphCanvas(self.data_frame)
         
         # options group box
         self.optionsGroupBox = QGroupBox("Options")
-        optionsLayout = QVBoxLayout()
+        options_layout = QVBoxLayout()
         dateRangeLayout = QFormLayout()
         startDateLabel = QLabel("Start Date:")
-        self.startDateBox = QDateEdit(self.start_date)
-        self.startDateBox.setCalendarPopup(True)
-        self.startDateBox.setDisplayFormat(DATE_DISPLAY_FORMAT)
-        self.startDateBox.dateChanged.connect(self.graph.plot)
-        endDateLabel = QLabel("End Date:")
-        self.endDateBox = QDateEdit(self.end_date)
-        self.endDateBox.setCalendarPopup(True)
-        self.endDateBox.setDisplayFormat(DATE_DISPLAY_FORMAT)
-        self.endDateBox.dateChanged.connect(self.graph.plot)
-        dateRangeLayout.addRow(startDateLabel, self.startDateBox)
-        dateRangeLayout.addRow(endDateLabel, self.endDateBox)
+        self.start_date_box = QDateEdit(self.start_date)
+        self.start_date_box.setCalendarPopup(True)
+        self.start_date_box.setDisplayFormat(DATE_DISPLAY_FORMAT)
+        self.start_date_box.dateChanged.connect(self.plot)
+        end_date_label = QLabel("End Date:")
+        self.end_date_box = QDateEdit(self.end_date)
+        self.end_date_box.setCalendarPopup(True)
+        self.end_date_box.setDisplayFormat(DATE_DISPLAY_FORMAT)
+        self.end_date_box.dateChanged.connect(self.plot)
+        dateRangeLayout.addRow(startDateLabel, self.start_date_box)
+        dateRangeLayout.addRow(end_date_label, self.end_date_box)
         # days of week
         self.sundayCheckBox = QCheckBox("Sunday")
         self.mondayCheckBox = QCheckBox("Monday")
@@ -52,24 +51,24 @@ class DataWidget(QWidget):
         self.thursdayCheckBox = QCheckBox("Thursday")
         self.fridayCheckBox = QCheckBox("Friday")
         self.saturdayCheckBox = QCheckBox("Saturday")
-        self.sundayCheckBox.toggled.connect(self.graph.plot)
-        self.mondayCheckBox.toggled.connect(self.graph.plot)
-        self.tuesdayCheckBox.toggled.connect(self.graph.plot)
-        self.wednesdayCheckBox.toggled.connect(self.graph.plot)
-        self.thursdayCheckBox.toggled.connect(self.graph.plot)
-        self.fridayCheckBox.toggled.connect(self.graph.plot)
-        self.saturdayCheckBox.toggled.connect(self.graph.plot)
+        self.sundayCheckBox.toggled.connect(self.plot)
+        self.mondayCheckBox.toggled.connect(self.plot)
+        self.tuesdayCheckBox.toggled.connect(self.plot)
+        self.wednesdayCheckBox.toggled.connect(self.plot)
+        self.thursdayCheckBox.toggled.connect(self.plot)
+        self.fridayCheckBox.toggled.connect(self.plot)
+        self.saturdayCheckBox.toggled.connect(self.plot)
         # 
-        optionsLayout.addLayout(dateRangeLayout)
-        optionsLayout.addWidget(self.sundayCheckBox)
-        optionsLayout.addWidget(self.mondayCheckBox)
-        optionsLayout.addWidget(self.tuesdayCheckBox)
-        optionsLayout.addWidget(self.wednesdayCheckBox)
-        optionsLayout.addWidget(self.thursdayCheckBox)
-        optionsLayout.addWidget(self.fridayCheckBox)
-        optionsLayout.addWidget(self.saturdayCheckBox)
-        optionsLayout.addWidget(QPushButton("Button"))
-        self.optionsGroupBox.setLayout(optionsLayout)
+        options_layout.addLayout(dateRangeLayout)
+        options_layout.addWidget(self.sundayCheckBox)
+        options_layout.addWidget(self.mondayCheckBox)
+        options_layout.addWidget(self.tuesdayCheckBox)
+        options_layout.addWidget(self.wednesdayCheckBox)
+        options_layout.addWidget(self.thursdayCheckBox)
+        options_layout.addWidget(self.fridayCheckBox)
+        options_layout.addWidget(self.saturdayCheckBox)
+        options_layout.addWidget(QPushButton("Button"))
+        self.optionsGroupBox.setLayout(options_layout)
         
         # choice group box
         self.choiceGroupBox = QGroupBox("Choice")
@@ -102,14 +101,19 @@ class DataWidget(QWidget):
         """read data_file and import it's content as pandas dataframe"""
         dateparse = lambda x: pd.datetime.strptime(x, '%Y-%m-%d')
         self.data_frame = pd.read_csv(data_file,
-                                      header=0,
+                                      #header=0,
                                       index_col=0,
-                                      parse_dates=True,
-                                      date_parser=dateparse)
+                                      parse_dates=True)
+                                      #date_parser=dateparse)
 
-    def update_date(self, date_type):
-        """method to update start / end dates upon selection"""
-        pass
+    def plot(self):
+        """Method to update start / end dates upon selection. Fetch the start /
+        end dates, convert the QTime datatype to DateTime.Date datatype, and
+        plot the graph.
+        """
+        self.start_date = self.start_date_box.date().toPyDate()
+        self.end_date = self.end_date_box.date().toPyDate()
+        self.graph.plot(self.data_frame.loc[self.start_date : self.end_date])
 
 
 if __name__ == '__main__':
