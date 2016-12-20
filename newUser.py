@@ -68,8 +68,8 @@ class NewUserForm(QWidget):
         self.fieldComboBox.addItems(field_list)
         self.fieldLabel.setBuddy(self.fieldComboBox)
 
-        self.nextButton = QPushButton("Next >")
-        self.buttonBox = QDialogButtonBox(self.nextButton)
+        # self.nextButton = QPushButton("Next >")
+        # self.buttonBox = QDialogButtonBox(self.nextButton)
 
     def layoutWidgets(self):
         formLayout = QGridLayout()
@@ -92,13 +92,14 @@ class NewUserForm(QWidget):
         formLayout.addWidget(self.fieldLabel, 7, 1)
         formLayout.addWidget(self.fieldComboBox, 7, 2)
         formLayout.setRowMinimumHeight(8, 30)
-        formLayout.addWidget(self.nextButton, 9, 2)
+        # formLayout.addWidget(self.nextButton, 9, 2)
         formLayout.setRowStretch(10, 1)
 
         self.setLayout(formLayout)
 
     def createConnections(self):
-        self.nextButton.clicked.connect(self.accepted)
+        # self.nextButton.clicked.connect(self.accepted)
+        pass
 
     def accepted(self):
         self.writeResults()
