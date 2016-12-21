@@ -60,6 +60,8 @@ class NewUserForm(QWidget):
         self.fieldLabel = QLabel("Primary &field of studies:")
         field_list = ["--- Please select ---",
                       "Electrical Engineering",
+                      "Electrical Engineering & Computer Science",
+                      "Electrical Engineering & Physics",
                       "Mechanical Engineering",
                       "Industrial Engineering",
                       "Biomedical Engineering",
@@ -68,8 +70,8 @@ class NewUserForm(QWidget):
         self.fieldComboBox.addItems(field_list)
         self.fieldLabel.setBuddy(self.fieldComboBox)
 
-        # self.nextButton = QPushButton("Next >")
-        # self.buttonBox = QDialogButtonBox(self.nextButton)
+        # self.next_button = QPushButton("Next >")
+        # self.buttonBox = QDialogButtonBox(self.next_button)
 
     def layoutWidgets(self):
         formLayout = QGridLayout()
@@ -92,19 +94,21 @@ class NewUserForm(QWidget):
         formLayout.addWidget(self.fieldLabel, 7, 1)
         formLayout.addWidget(self.fieldComboBox, 7, 2)
         formLayout.setRowMinimumHeight(8, 30)
-        # formLayout.addWidget(self.nextButton, 9, 2)
+        # formLayout.addWidget(self.next_button, 9, 2)
         formLayout.setRowStretch(10, 1)
 
         self.setLayout(formLayout)
 
     def createConnections(self):
-        # self.nextButton.clicked.connect(self.accepted)
+        # self.next_button.clicked.connect(self.accepted)
         pass
 
-    def accepted(self):
-        self.writeResults()
 
-    def writeResults(self):
+
+    def accepted(self):
+        self.write_results(file_name="output/data.csv")
+
+    def write_results(self, file_name):
         # get value of gender checkbox and convert
         # 1 --> m
         # 2 --> f
@@ -112,7 +116,7 @@ class NewUserForm(QWidget):
         gender = 'm' if g == 1 else 'f' if g == 2 else '-'
 
         # write results to CSV file
-        file = open("output/data.csv", "w")
+        file = open(file_name, "w")
         file.write(self.idLineEdit.text() + ',' +
                    str(self.ageSpinBox.value()) + ',' +
                    gender + ',' +

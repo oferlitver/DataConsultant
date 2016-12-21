@@ -21,34 +21,34 @@ class FlowDialog(QWidget):
         super(FlowDialog, self).__init__(parent)
         self._n_steps = 0  # number of performed steps
 
-        self.pagesWidget = QStackedWidget()
-        self.pagesWidget.addWidget(NewUserForm())
-        self.pagesWidget.addWidget(DataWidget())
-        self.nextButton = QPushButton("&Next")
-        self.nextButton.pressed.connect(self.nextPressed)
-        mainLayout = QGridLayout()
+        self.pages_widget = QStackedWidget()
+        self.pages_widget.addWidget(NewUserForm())
+        self.pages_widget.addWidget(DataWidget())
+        self.next_button = QPushButton("&Next")
+        self.next_button.pressed.connect(self.nextPressed)
+        main_layout = QGridLayout()
         # set screen shoulders
-        mainLayout.setRowMinimumHeight(0, 80)
-        mainLayout.setRowMinimumHeight(3, 80)
-        mainLayout.setColumnMinimumWidth(0, 80)
-        mainLayout.setColumnMinimumWidth(2, 80)
-        mainLayout.addWidget(self.pagesWidget, 1, 1)
-        mainLayout.addWidget(self.nextButton, 2, 1)
-        self.setLayout(mainLayout)
+        main_layout.setRowMinimumHeight(0, 80)
+        main_layout.setRowMinimumHeight(3, 80)
+        main_layout.setColumnMinimumWidth(0, 80)
+        main_layout.setColumnMinimumWidth(2, 80)
+        main_layout.addWidget(self.pages_widget, 1, 1)
+        main_layout.addWidget(self.next_button, 2, 1)
+        self.setLayout(main_layout)
 
     def nextPressed(self):
         """
         control the order and number of repetitions of the experiment
         :return:
         """
-        if self.pagesWidget.currentIndex() == 0:  # if on new_user screen
+        if self.pages_widget.currentIndex() == 0:  # if on new_user screen
             self._n_steps += 1
-            self.pagesWidget.setCurrentIndex(1)
-        elif self.pagesWidget.currentIndex() == 1:
+            self.pages_widget.setCurrentIndex(1)
+        elif self.pages_widget.currentIndex() == 1:
             if self._n_steps < NUM_STEPS:
                 self._n_steps += 1
                 print("Step number {}".format(self._n_steps))
-        elif self.pagesWidget.currentIndex() == 2:
+        elif self.pages_widget.currentIndex() == 2:
             print("That's it")
         else:
             raise RuntimeError("No such index")

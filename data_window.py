@@ -30,8 +30,8 @@ class DataWidget(QWidget):
         # options group box
         self.optionsGroupBox = QGroupBox("Options")
         options_layout = QVBoxLayout()
-        dateRangeLayout = QFormLayout()
-        startDateLabel = QLabel("Start Date:")
+        date_range_layout = QFormLayout()
+        start_date_label = QLabel("Start Date:")
         self.start_date_box = QDateEdit(self.start_date)
         self.start_date_box.setCalendarPopup(True)
         self.start_date_box.setDisplayFormat(DATE_DISPLAY_FORMAT)
@@ -41,8 +41,8 @@ class DataWidget(QWidget):
         self.end_date_box.setCalendarPopup(True)
         self.end_date_box.setDisplayFormat(DATE_DISPLAY_FORMAT)
         self.end_date_box.dateChanged.connect(self.plot)
-        dateRangeLayout.addRow(startDateLabel, self.start_date_box)
-        dateRangeLayout.addRow(end_date_label, self.end_date_box)
+        date_range_layout.addRow(start_date_label, self.start_date_box)
+        date_range_layout.addRow(end_date_label, self.end_date_box)
         # days of week
         self.sundayCheckBox = QCheckBox("Sunday")
         self.mondayCheckBox = QCheckBox("Monday")
@@ -59,7 +59,7 @@ class DataWidget(QWidget):
         self.fridayCheckBox.toggled.connect(self.plot)
         self.saturdayCheckBox.toggled.connect(self.plot)
         # 
-        options_layout.addLayout(dateRangeLayout)
+        options_layout.addLayout(date_range_layout)
         options_layout.addWidget(self.sundayCheckBox)
         options_layout.addWidget(self.mondayCheckBox)
         options_layout.addWidget(self.tuesdayCheckBox)
@@ -101,10 +101,8 @@ class DataWidget(QWidget):
         """read data_file and import it's content as pandas dataframe"""
         dateparse = lambda x: pd.datetime.strptime(x, '%Y-%m-%d')
         self.data_frame = pd.read_csv(data_file,
-                                      #header=0,
                                       index_col=0,
                                       parse_dates=True)
-                                      #date_parser=dateparse)
 
     def plot(self):
         """Method to update start / end dates upon selection. Fetch the start /
