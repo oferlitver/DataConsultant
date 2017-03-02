@@ -12,6 +12,7 @@ from PyQt5.QtWidgets import (QWidget, QPushButton, QVBoxLayout, QApplication)
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 
+
 class GraphCanvas(FigureCanvas):
 
     def __init__(self, data_frame, parent=None):
@@ -43,11 +44,11 @@ class ApplicationWindow(QWidget):
     """for debugging porposes only"""
     def __init__(self):
         QWidget.__init__(self)
-        
+
         self.graph = GraphCanvas()
         self.button = QPushButton("Plot")
         self.button.clicked.connect(self.graph.plot)
-        
+
         layout = QVBoxLayout()
         layout.addWidget(self.graph)
         layout.addWidget(self.button)

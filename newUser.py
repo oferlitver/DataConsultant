@@ -2,17 +2,56 @@
 
 import sys
 
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
-
-import mainWindow
+from PyQt5.QtWidgets import (QLabel, QLineEdit, QSpinBox, QRadioButton,
+                             QButtonGroup, QHBoxLayout, QComboBox, QGridLayout,
+                             QMessageBox, QApplication, QWidget)
+from PyQt5.QtGui import QFont, QRegExpValidator, QPixmap
+from PyQt5.QtCore import QRegExp
+import config
 
 # TODO finish this
 #from DataConsultant.styles import styles
 
 
 __author__ = 'Ofer Litver'
+
+
+class ExperimentSetup(QWidget):
+    """ Class for setting-up the experiment: choosing condition"""
+
+    def __init__(self, parent=None):
+        super(ExperimentSetup, self).__init__(parent)
+        self.title = QLabel("EXPERIMENTER ONLY")
+        # titleFont = QFont()
+        # titleFont.setPointSize(36)
+        # titleFont.setItalic(True)
+        # self.title.setFont(titleFont)
+        import os
+        print(os.getcwd())
+        self.mypixmap = QPixmap(os.getcwd() + "/ido.jpg")
+        self.title.setPixmap(self.mypixmap)
+        self.title.setGeometry(10, 10, 10, 10)
+
+        # conditions list
+        self.conditions_combo = QComboBox()
+        conditions_list = config.CONDITIONS['condition']
+        self.conditions_combo.addItems(conditions_list)
+
+        # layout
+        formLayout = QGridLayout()
+        formLayout.setSpacing(20)
+        formLayout.setColumnStretch(0, 5)
+        formLayout.setColumnStretch(1, 2)
+        formLayout.setColumnStretch(2, 5)
+        formLayout.setRowStretch(0, 1)
+        formLayout.setRowStretch(3, 1)
+
+        formLayout.addWidget(self.title, 1, 1, 1, 2)
+        formLayout.setRowMinimumHeight(2, 5)
+        formLayout.addWidget(self.conditions_combo, 2, 1)
+
+        self.setLayout(formLayout)
+
 
 class NewUserForm(QWidget):
 
@@ -103,25 +142,19 @@ class NewUserForm(QWidget):
         # self.next_button.clicked.connect(self.accepted)
         pass
 
-
-
     def accepted(self):
-        self.write_results(file_name="output/data.csv")
+        pass
 
-    def write_results(self, file_name):
+    def save_results(self):
         # get value of gender checkbox and convert
         # 1 --> m
         # 2 --> f
         g = self.genderButtonGroup.checkedId()
-        gender = 'm' if g == 1 else 'f' if g == 2 else '-'
-
-        # write results to CSV file
-        file = open(file_name, "w")
-        file.write(self.idLineEdit.text() + ',' +
-                   str(self.ageSpinBox.value()) + ',' +
-                   gender + ',' +
-                   self.fieldComboBox.currentText())
-        file.close()
+        # save variables to global module 'config'
+        config.id = self.idLineEdit.text()
+        config.age = self.ageSpinBox.value()
+        config.male = 1 if g == 1 else 0 if g == 2 else 999
+        config.field = self.fieldComboBox.currentText()
 
     def rejected(self):
         # in case of pressing "Cancel"

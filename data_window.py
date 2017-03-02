@@ -90,8 +90,11 @@ class DataWidget(QWidget):
         self.choiceGroupBox.setLayout(choiceLayout)
 
         # count-down timer
-        self.timer = QTimer()
-        self.lcdnumber
+        self.timerGroupBox = QGroupBox("Timer")
+        timer_layout = QVBoxLayout()
+        self.timerGroupBox.setLayout(timer_layout)
+        self.count_down_timer = CountDownTimer()
+        timer_layout.addWidget(self.count_down_timer.lcd)
 
         # central widget
         frame = QFrame(self)
@@ -100,7 +103,7 @@ class DataWidget(QWidget):
         self.grid.setContentsMargins(16, 16, 16, 16)
         self.grid.addWidget(self.optionsGroupBox, 0, 0)
         self.grid.addWidget(self.graphGroupBox, 0, 1)
-        #self.grid.addWidget()
+        self.grid.addWidget(self.timerGroupBox, 0, 2)
         self.grid.addWidget(self.choiceGroupBox, 1, 1)
         self.grid.setColumnStretch(0, 1)
         self.grid.setColumnStretch(1, 3)
@@ -124,7 +127,7 @@ class DataWidget(QWidget):
         self.end_date = self.end_date_box.date().toPyDate()
         self.graph.plot(self.data_frame.loc[self.start_date : self.end_date])
 
-    def add_log_line(self):
+    def add_log_row(self):
         """
         Write data in the log file
         :return:
@@ -138,13 +141,26 @@ class DataWidget(QWidget):
 
 class CountDownTimer(QLCDNumber):
 
-    def __init__(self):
-        value = 60
+    def __init__(self, time_allocation=15, parent=None):
+        super(CountDownTimer, self).__init__(parent)
+        self.time_allocation = time_allocation
+        self.time_value = self.time_allocation
 
-        @pyqtSlot()
-        def count(self):
-            self.display(self.value)
-            self.value -= 1
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.advance_time)
+
+        self.lcd = QLCDNumber(self)
+        self.lcd.setDigitCount(3)
+        self.lcd.display(self.time_value)
+
+    def restart_timer(self):
+        self.time_value = self.time_allocation
+        self.lcd.display(self.time_value)
+        self.timer.start(1000)
+
+    def advance_time(self):
+        self.time_value -= 1
+        self.lcd.display(self.time_value)
 
 
 if __name__ == '__main__':
