@@ -10,6 +10,7 @@ from PyQt5.QtWidgets import (QWidget, QDialog, QApplication, QStackedWidget,
                              QLabel, QFrame, QGridLayout, QHBoxLayout)
 from newUser import NewUserForm, ExperimentSetup
 from data_window import DataWidget
+from instructions import InstructionsScreen
 
 
 __author__ = 'Ofer Litver'
@@ -17,7 +18,7 @@ __author__ = 'Ofer Litver'
 
 class FlowDialog(QWidget):
     """
-    Class for controlling the order of screens in the experiment
+    Class for controlling the order of screens in the experiment.
     """
 
     def __init__(self, parent=None):
@@ -28,11 +29,13 @@ class FlowDialog(QWidget):
 
         # create widgets
         self.experiment_setup = ExperimentSetup()
+        self.instructions = InstructionsScreen("./instructions/he-informed-consent.txt")
         self.new_user_form = NewUserForm()
         self.data_widget = DataWidget()
 
         # add widgets to pages_widget
         self.pages_widget.addWidget(self.experiment_setup)
+        self.pages_widget.addWidget(self.instructions)
         self.pages_widget.addWidget(self.new_user_form)
         self.pages_widget.addWidget(self.data_widget)
 
@@ -60,32 +63,40 @@ class FlowDialog(QWidget):
         control the order and number of repetitions of the experiment
         """
         self.data_widget.count_down_timer.restart_timer()  # restart timer
+        print(self.pages_widget.currentWidget())
 
         # if on setup screen
         if self.pages_widget.currentIndex() == 0:
-            self.pages_widget.setCurrentIndex(1)
+            self.raise_index()
 
         # welcome screen
-
+        elif self.pages_widget.currentIndex() == 1:
+            self.raise_index()
 
         # if on new_user screen
-        elif self.pages_widget.currentIndex() == 1:
+        elif self.pages_widget.currentIndex() == 2:
             self.new_user_form.save_results()
-            self.pages_widget.setCurrentIndex(2)
+            self.raise_index()
 
         # if on data screen
-        elif self.pages_widget.currentIndex() == 2:
+        elif self.pages_widget.currentIndex() == 3:
             if self._n_steps < config.NUM_STEPS:
                 self.data_widget.add_log_row()
                 self._n_steps += 1
                 print("Step number {}".format(self._n_steps))  # DEBUGGING
+            else:
+                self.raise_index()
 
-        elif self.pages_widget.currentIndex() == 3:
+        elif self.pages_widget.currentIndex() == 4:
             print("That's it")  # DEBUGGING
 
         else:
             # If reached wrong index
             raise RuntimeError("No such index")
+
+    def raise_index(self):
+        current = self.pages_widget.currentIndex()
+        self.pages_widget.setCurrentIndex(current + 1)
 
 
 def main():
