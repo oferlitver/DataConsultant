@@ -63,7 +63,6 @@ class FlowDialog(QWidget):
         control the order and number of repetitions of the experiment
         """
         self.data_widget.count_down_timer.restart_timer()  # restart timer
-        print(self.pages_widget.currentWidget())
 
         # if on setup screen
         if self.pages_widget.currentIndex() == 0:
