@@ -98,11 +98,11 @@ class NewUserForm(QWidget):
 
         self.fieldLabel = QLabel("Primary &field of studies:")
         field_list = ["--- Please select ---",
+                      "Industrial Engineering",
                       "Electrical Engineering",
                       "Electrical Engineering & Computer Science",
                       "Electrical Engineering & Physics",
                       "Mechanical Engineering",
-                      "Industrial Engineering",
                       "Biomedical Engineering",
                       "Environmental Engineering"]
         self.fieldComboBox = QComboBox()

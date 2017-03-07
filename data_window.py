@@ -12,6 +12,7 @@ from PyQt5.QtWidgets import (QWidget, QGroupBox, QVBoxLayout, QCheckBox,
     QPushButton, QLabel, QFrame, QGridLayout, QDateEdit, QFormLayout, QSpinBox,
     QLCDNumber)
 from PyQt5.QtCore import QTimer
+from PyQt5.QtGui import QColor
 import config
 from graph import GraphCanvas
 
@@ -101,14 +102,16 @@ class DataWidget(QWidget):
         self.grid = QGridLayout(frame)
         self.grid.setSpacing(16)
         self.grid.setContentsMargins(16, 16, 16, 16)
-        self.grid.addWidget(self.optionsGroupBox, 0, 0)
-        self.grid.addWidget(self.graphGroupBox, 0, 1)
+        self.grid.addWidget(self.optionsGroupBox, 0, 0, 2, 1)
+        self.grid.addWidget(self.graphGroupBox, 0, 1, 2, 1)
         self.grid.addWidget(self.timerGroupBox, 0, 2)
-        self.grid.addWidget(self.choiceGroupBox, 1, 1)
-        self.grid.setColumnStretch(0, 1)
-        self.grid.setColumnStretch(1, 3)
-        self.grid.setRowStretch(0, 2)
-        self.grid.setRowStretch(1, 1)
+        self.grid.addWidget(self.choiceGroupBox, 2, 1)
+        self.grid.setColumnStretch(0, 2)
+        self.grid.setColumnStretch(1, 6)
+        self.grid.setColumnStretch(2, 1)
+        self.grid.setRowStretch(0, 1)
+        self.grid.setRowStretch(1, 2)
+        self.grid.setRowStretch(2, 2)
         self.setLayout(self.grid)
 
     def read_data_file(self, data_file):
@@ -140,17 +143,24 @@ class DataWidget(QWidget):
 
 
 class CountDownTimer(QLCDNumber):
+    """
+    time_allocation: positive integer, indicating the allocated time for user
+    time_value: started as time_allocation, and dynamically changed every second
+    """
 
     def __init__(self, time_allocation=15, parent=None):
         super(CountDownTimer, self).__init__(parent)
         self.time_allocation = time_allocation
         self.time_value = self.time_allocation
 
+        # timer
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.advance_time)
 
+        # LCD time display
         self.lcd = QLCDNumber(self)
         self.lcd.setDigitCount(3)
+        self.lcd.setSegmentStyle(QLCDNumber.Flat)
         self.lcd.display(self.time_value)
 
     def restart_timer(self):
@@ -160,6 +170,18 @@ class CountDownTimer(QLCDNumber):
 
     def advance_time(self):
         self.time_value -= 1
+
+        # Yellow - five seconds left
+        if self.time_value == 5:
+            palette = self.lcd.palette()
+            palette.setColor(palette.WindowText, QColor(255, 153, 0))
+            self.lcd.setPalette(palette)
+
+        # Red - no time left
+        if self.time_value == 0:
+            palette = self.lcd.palette()
+            palette.setColor(palette.WindowText, QColor(255, 0, 0))
+            self.lcd.setPalette(palette)
         self.lcd.display(self.time_value)
 
 
