@@ -10,7 +10,7 @@ import csv
 import pandas as pd
 from PyQt5.QtWidgets import (QWidget, QGroupBox, QVBoxLayout, QCheckBox,
     QPushButton, QLabel, QFrame, QGridLayout, QDateEdit, QFormLayout, QSpinBox,
-    QLCDNumber)
+    QLCDNumber, QHBoxLayout)
 from PyQt5.QtCore import QTimer
 from PyQt5.QtGui import QColor
 import config
@@ -83,12 +83,31 @@ class DataWidget(QWidget):
 
         # choice group box
         self.choiceGroupBox = QGroupBox("Choice")
-        choiceLayout = QVBoxLayout()
-        choiceLayout.addWidget(QLabel("placeholder:"))
-        self.decision_value = QSpinBox()
-        self.decision_value.setValue(20)
-        choiceLayout.addWidget(self.decision_value)
-        self.choiceGroupBox.setLayout(choiceLayout)
+
+        choice_layout = QVBoxLayout()
+
+        choice_layout_1 = QHBoxLayout()
+        choice_layout_1.addWidget(QLabel("A"))
+        choice_layout_1.addWidget(QLabel("B"))
+        choice_layout_1.addWidget(QLabel("C"))
+        choice_layout_1.addWidget(QLabel("D"))
+
+        choice_layout_2 = QHBoxLayout()
+        self.decision_value_1 = QSpinBox()
+        self.decision_value_2 = QSpinBox()
+        self.decision_value_3 = QSpinBox()
+        self.decision_value_4 = QSpinBox()
+        choice_layout_2.addWidget(self.decision_value_1)
+        choice_layout_2.addWidget(self.decision_value_2)
+        choice_layout_2.addWidget(self.decision_value_3)
+        choice_layout_2.addWidget(self.decision_value_4)
+
+        choice_layout.addLayout(choice_layout_1)
+        choice_layout.addLayout(choice_layout_2)
+
+        self.decision_value_1.setValue(42)
+
+        self.choiceGroupBox.setLayout(choice_layout)
 
         # count-down timer
         self.timerGroupBox = QGroupBox("Timer")
@@ -122,7 +141,8 @@ class DataWidget(QWidget):
                                       parse_dates=True)
 
     def plot(self):
-        """Method to update start / end dates upon selection. Fetch the start /
+        """
+        Method to update start / end dates upon selection. Fetch the start /
         end dates, convert the QTime datatype to DateTime.Date datatype, and
         plot the graph.
         """
@@ -166,6 +186,9 @@ class CountDownTimer(QLCDNumber):
     def restart_timer(self):
         self.time_value = self.time_allocation
         self.lcd.display(self.time_value)
+        palette = self.lcd.palette()
+        palette.setColor(palette.WindowText, QColor(0, 0, 0))
+        self.lcd.setPalette(palette)
         self.timer.start(1000)
 
     def advance_time(self):
