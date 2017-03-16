@@ -66,6 +66,12 @@ class FlowDialog(QWidget):
 
         # if on setup screen
         if self.pages_widget.currentIndex() == 0:
+            # get condition index number
+            condition_index = self.experiment_setup.conditions_combo.currentIndex()
+            # DEBUGGING:
+            debug_condition = config.CONDITIONS['a'][condition_index]
+            print(debug_condition)
+            
             self.raise_index()
 
         # welcome screen
