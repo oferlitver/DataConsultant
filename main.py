@@ -14,6 +14,7 @@ from instructions import InstructionsScreen
 
 
 __author__ = 'Ofer Litver'
+__email__ = 'oferlitver@gmail.com'
 
 
 class FlowDialog(QWidget):
@@ -71,7 +72,7 @@ class FlowDialog(QWidget):
             # DEBUGGING:
             debug_condition = config.CONDITIONS['a'][condition_index]
             print(debug_condition)
-            
+
             self.raise_index()
 
         # welcome screen
